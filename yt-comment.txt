@@ -1,0 +1,129 @@
+
+吉井雄太朗
+49 seconds ago
+ @Aras  I did it! I made a byte <=> number conversion program
+the ascii number => byte part was straightforward, I was lazy so I spamed "+" or "-" when I needed a constant
+
+# read the 100th place
+>,------------------------------------------------
+# add it to the first byte while multiplying by 100
+[-<++++++++++++++++++++++++++++++++++++++++++++++
++++++++++++++++++++++++++++++++++++++++++++++++++
++++++>]
+# read the 10th place
+,------------------------------------------------
+# add it to the first byte while multiplying by 10
+[-<++++++++++>]
+# read the 1th place
+,------------------------------------------------
+# add it to the first byte
+[-<+>]
+<
+# result
+# n 0 0 0
+# ^
+
+byte => ascii number was a bit more involved
+I had to tweak the input format to accommodate branch condition to see the base number can be further subtracted.
+I also had to deal with edge conditions when n%100==0 or n%10==0, so the code got a bit messy around there.
+The formatting are a bit messed up, so I also pasted it to github gist too in case you're interested.
+My github username is martian17, and the gist name is byte-num-to-ascii.bf
+Unfortunately I can't post the url here because of youtube screening, so you need to go there yourself.
+
+
+# input format
+# 0 n 0 0 0 etc
+#   ^
+# simulating input 124
+>++++++++++++++++++++++++++++++
+++++++++++++++++++++++++++++++
+++++++++++++++++++++++++++++++
+++++++++++++++++++++++++++++++++++
+>>>+<<<
+# 0 124 0 0 1
+#   ^
+
+# first loop: 100th place
+[
+>++++++++++++++++++++++++++++++++++++++++
+++++++++++++++++++++++++++++++++++++++++
+++++++++++++++++++++
+# 0 124 100 0 1
+#       ^
+[<[->-<<]>>]
+# 0 25 0 0 1  can be equal
+#      ^
+#or
+# 0 0 75 0 1
+#        ^
+>[-
+  #the termination case
+  <<------------------------------
+  ------------------------------
+  ----------------------------------------
+  # 0 0 ―25 0 0 n
+  #      ^
+  >>>[-<<<<<+>>>>>]<<
+  # n 0 ―25 0 0 0
+  #         ^
+]
+>[
+  #the continuation case
+  >+< <<<<
+]
+>
+]
+>>>[->[-<<<<<+>>>>>]>>>]
+
+
+<<<<<<
+# adding 48 offset
+<<++++++++++++++++++++++++++++++++++++++++
+++++++++>>
+
+
+
+# second loop: 10th place
+# the code is the same as 100th place; but the input is inverted; so some signs had to be inverted
+>>>+<<<
+# 0 ―24 0 0 1
+#   ^
+[
+>----------
+# 0 ―24 ―10 0 1
+#       ^
+[<[+>+<<]>>]
+# 0 ―4 0 0 1  can be equal
+#      ^
+#or
+# 0 0 ―6 0 1
+#        ^
+>[-
+  #the termination case
+  <<++++++++++
+  # 0 0 4 0 0 n
+  #     ^
+  >>>[-<<<<<+>>>>>]<<
+  # n 0 ―25 0 0 0
+  #         ^
+]
+>[
+  #the continuation case
+  >+< <<<<
+]
+>
+]
+>>>[->[-<<<<<+>>>>>]>>>]
+<<<<<<[-<+>]
+#adding 48
+<++++++++++++++++++++++++++++++++++++++++
+++++++++
+<++++++++++++++++++++++++++++++++++++++++
+++++++++
+<
+# output
+# 49 50 52 0 0 0 0 0 0
+# ^
+
+.>.>.<<
+# outputs 124
